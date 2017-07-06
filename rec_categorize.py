@@ -1,4 +1,5 @@
-#! /usr/bin python3
+#!/usr/bin/env python3
+
 
 import os, os.path
 import unicodedata
@@ -33,11 +34,13 @@ class RecordedFile:
         if self.category:
             move_to = os.path.join(target_dir, self.category)
             if testmode:
-                print(self.filename, move_to)
+                print(self.filename, ">>", move_to)
                 return
             if not os.path.exists(move_to):
                 os.mkdir(move_to)
             shutil.move(self.filepath, move_to)
+        else:
+            print("IGNORED : ", self.filename)
 
     @staticmethod
     def escape_filename(filename):
@@ -133,11 +136,11 @@ def main(file_dir, target_dir, execute=False):
     category = Categories(targetpath=target_dir, moemoe_tokyo_years=3)
     recs = []
 
-    #Recorded files
+    # Recorded files
     for filename in os.listdir(file_dir):
         if filename[0] == ".":
             continue
-        filepath = os.path.join(file_dir,filename)
+        filepath = os.path.join(file_dir, filename)
         if os.path.isfile(filepath):
             recs.append(RecordedFile(filepath))
 
@@ -147,20 +150,23 @@ def main(file_dir, target_dir, execute=False):
     for rec in recs:
         category.select_category(rec)
 
-
     if not execute:
         for rec in recs:
             assert isinstance(rec, RecordedFile)
             rec.movefile(target_dir=target_dir, testmode=True)
 
     if execute or input("EXECUTE? (y,N) :") == "y":
-        for rec in recs:
+        for i,rec in enumerate(recs):
+            print("\r{}/{}".format(i,len(recs)))
             rec.movefile(target_dir=target_dir, testmode=False)
 
     print("END")
+
+
 if __name__ == "__main__":
     import sys
-    if len(sys.argv)<3:
+
+    if len(sys.argv) < 3:
         print("USAGE  argv 1:file_dir argv2:target_dir")
         exit(-1)
-    main(sys.argv[1],sys.argv[2])
+    main(sys.argv[1], sys.argv[2])
