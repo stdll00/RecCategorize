@@ -187,8 +187,11 @@ def main(file_dir, target_dir, execute=False):
 
 if __name__ == "__main__":
     import sys
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('dir', nargs=2,help="file source  and directory that files move to ")
+    parser.add_argument("-y","--execute", help="execute without confirm",
+                        action="store_true")
+    args = parser.parse_args()
 
-    if len(sys.argv) < 3:
-        print("USAGE  argv 1:file_dir argv2:target_dir")
-        exit(-1)
-    main(sys.argv[1], sys.argv[2])
+    main(args.dir[0], args.dir[1],execute=args.execute)
