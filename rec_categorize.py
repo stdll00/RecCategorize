@@ -15,12 +15,12 @@ import requests
 class RecordedFile:
     VIDEO_EXTENSIONS = ["ts", "m2ts", "mp4", "webm", "avi", "m4p", "m4v", "mpeg", "mpeg2"]
 
-    def __init__(self, filename):
+    def __init__(self, filepath):
         # assert os.path.exists(filename)
-        assert filename.split(".")[-1] in self.VIDEO_EXTENSIONS
+        assert filepath.split(".")[-1] in self.VIDEO_EXTENSIONS
         self.category = None
-        self.filename = filename
-        self.filename = os.path.basename(filename)
+        self.filepath = filepath
+        self.filename = os.path.basename(filepath)
         self.search_name = self.processing_searchname(
             unicodedata.normalize(
                 "NFKC",
@@ -37,7 +37,7 @@ class RecordedFile:
                 return
             if not os.path.exists(move_to):
                 os.mkdir(move_to)
-            shutil.move(self.filename, move_to)
+            shutil.move(self.filepath, move_to)
 
     @staticmethod
     def escape_filename(filename):
