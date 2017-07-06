@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
+"""
+https://github.com/stdll00/RecCategorize.git
 
+
+--setup--
+pip3 install requests
+chomod +x rec_categorize.py
+"""
 
 import os, os.path
 import unicodedata
@@ -14,7 +21,7 @@ import requests
 
 
 class RecordedFile:
-    VIDEO_EXTENSIONS = ["ts", "m2ts", "mp4", "webm", "avi", "m4p", "m4v", "mpeg", "mpeg2"]
+    VIDEO_EXTENSIONS = ["ts", "m2ts", "mp4", "webm", "avi", "m4p", "m4v", "mpeg", "mpeg2","testdir"]
 
     def __init__(self, filepath):
         # assert os.path.exists(filename)
@@ -107,7 +114,7 @@ class Categories:
     def select_category(self, recorded_file):
         assert isinstance(recorded_file, RecordedFile)
         for category in self.data:
-            if category in recorded_file.search_name:
+            if category in recorded_file.search_name: #TODO 先頭一致に変えるべき?
                 recorded_file.category = category
                 return
         result = difflib.get_close_matches(recorded_file.search_name, self.data)
