@@ -16,7 +16,7 @@ import difflib
 import datetime
 import collections
 import string
-
+import time
 import requests
 
 
@@ -45,6 +45,10 @@ class RecordedFile:
                 return
             if not os.path.exists(move_to):
                 os.mkdir(move_to)
+            if os.path.exists(os.path.join(move_to,self.filename)):
+                print("same file Already Exists... ",self.filename)
+                #TODO move to trash?
+                return
             shutil.move(self.filepath, move_to)
         else:
             print("IGNORED : ", self.filename)
@@ -89,7 +93,7 @@ class RecordedFile:
 
 
 class Categories:
-    def __init__(self, targetpath=None, moemoe_tokyo_years=3, additional_data=[]):
+    def __init__(self, targetpath=None, moemoe_tokyo_years=0, additional_data=[]):
         self.data = [] + list(additional_data)
         if targetpath:
             self.data.extend(file for file in os.listdir(targetpath) if file[0] != ".")
@@ -117,7 +121,7 @@ class Categories:
             if category in recorded_file.search_name: #TODO 先頭一致に変えるべき?
                 recorded_file.category = category
                 return
-        result = difflib.get_close_matches(recorded_file.search_name, self.data)
+        result = difflib.get_close_matches(recorded_file.search_name, self.data,cutoff=0.8)
         if not result:
             return
         recorded_file.category = result[0]
@@ -137,6 +141,16 @@ class Categories:
         for category in self.data:
             if len(category) <= 1:
                 self.data.remove(category)
+        #TODO 部分文字列になっているときに削除
+        remove_indexs = []
+        for category1 in self.data:
+            for i,category2 in enumerate(self.data):
+                if len(category1) < len(category2):
+                    if category1 == category2[:len(category1)]:
+                        remove_indexs.append(i)
+        for i in sorted(remove_indexs,reverse=True):
+            self.data.pop(i)
+
 
 
 def main(file_dir, target_dir, execute=False):
@@ -162,9 +176,10 @@ def main(file_dir, target_dir, execute=False):
             assert isinstance(rec, RecordedFile)
             rec.movefile(target_dir=target_dir, testmode=True)
 
+    _time = time.time()
     if execute or input("EXECUTE? (y,N) :") == "y":
         for i,rec in enumerate(recs):
-            print("\r{}/{}".format(i,len(recs)))
+            print("\r{}/{}    {} left. ".format(i,len(recs),time.time()-_time , ) ,end="")
             rec.movefile(target_dir=target_dir, testmode=False)
 
     print("END")

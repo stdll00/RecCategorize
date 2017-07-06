@@ -8,10 +8,12 @@ pip3 install requests
   
 # How to use it  
 ```
+wget https://raw.githubusercontent.com/stdll00/RecCategorize/master/rec_categorize.py
 ./rec_categorized.py recorded_file_dir categorized_dir
 ```
-確認画面で y で移動させる
+確認画面で y でファイルをmvさせる  
 
+categorized_dirに予めカテゴリの名前のディレクトリを作成しておくと類似しているファイルが自動的に分別されます。
 
 
 # アルゴリズム  
@@ -20,6 +22,7 @@ http://qiita.com/AKB428/items/64938febfd4dcf6ea698
 にあるapi.moemoe.tokyo/anime/v1/master/:year 
 のデータ、
 ファイル名から分類しています。
+
 
 # GoogleDrive (GooglePhotos) での利用  
 GoogleDriveを同期させて利用してください。　　
