@@ -157,7 +157,7 @@ def main(file_dir, target_dir, execute=False):
         for rec in recs:
             rec.movefile(target_dir=target_dir, testmode=False)
 
-
+    print("END")
 if __name__ == "__main__":
     import sys
     if len(sys.argv)<3:
