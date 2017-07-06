@@ -130,14 +130,16 @@ class Categories:
 
 
 def main(file_dir, target_dir, execute=False):
-    category = Categories(target_dir=target_dir, moemoe_tokyo=3)
+    category = Categories(targetpath=target_dir, moemoe_tokyo_years=3)
     recs = []
 
     #Recorded files
     for filename in os.listdir(file_dir):
         if filename[0] == ".":
             continue
-        recs.append(RecordedFile(filename))
+        filepath = os.path.join(file_dir,filename)
+        if os.path.isfile(filepath):
+            recs.append(RecordedFile(filepath))
 
     for rec in recs:
         category.select_category(rec)

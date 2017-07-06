@@ -4,7 +4,7 @@ category = Categories(moemoe_tokyo_years=3,additional_data=["金曜ロードSHOW
 recs = []
 
 for line in open("testdata.txt"):
-    recs.append(RecordedFile(line))
+    recs.append(RecordedFile(line.rstrip()))
 for rec in recs:
     category.select_category(rec)
 
