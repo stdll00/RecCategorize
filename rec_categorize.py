@@ -209,11 +209,8 @@ if __name__ == "__main__":
     parser.add_argument('dir', nargs=2, help="file source  and directory that files move to ")
     parser.add_argument("-y", "--execute", help="execute without confirm",
                         action="store_true")
-    parser.add_argument("-d", "--dupedelete", help="dupedelte",
-                        action="store_false")
-
     parser.add_argument("-l", "--link", help="symlink",
-                        action="store_false")
+                        action="store_true")
 
     args = parser.parse_args()
 
