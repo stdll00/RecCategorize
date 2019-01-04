@@ -9,6 +9,8 @@ pip3 install requests
 # How to use it  
 ```
 wget https://raw.githubusercontent.com/stdll00/RecCategorize/master/rec_categorize.py
+
+chmod +x rec_categorize.py
 ./rec_categorized.py recorded_file_dir categorized_dir
 ```
 確認画面で y でファイルをmvさせる  

@@ -21,7 +21,7 @@ import requests
 
 
 class RecordedFile:
-    VIDEO_EXTENSIONS = ["ts", "m2ts", "mp4", "webm", "avi", "m4p", "m4v", "mpeg", "mpeg2","testdir"]
+    VIDEO_EXTENSIONS = ["ts", "m2ts", "mp4", "webm", "avi", "m4p", "m4v", "mpeg", "mpeg2", "testdir"]
 
     def __init__(self, filepath):
         # assert os.path.exists(filename)
@@ -45,13 +45,26 @@ class RecordedFile:
                 return
             if not os.path.exists(move_to):
                 os.mkdir(move_to)
-            if os.path.exists(os.path.join(move_to,self.filename)):
-                print("same file Already Exists... ",self.filename)
-                #TODO move to trash?
+            if os.path.exists(os.path.join(move_to, self.filename)):
+                print("same file Already Exists... ", self.filename)
+                # TODO move to trash?
                 return
             shutil.move(self.filepath, move_to)
         else:
             print("IGNORED : ", self.filename)
+
+    def symlink(self, target_dir, testmode=False):
+        if self.category:
+            move_to = os.path.join(target_dir, self.category)
+            if testmode:
+                print(self.filename, ">>", move_to)
+                return
+            if not os.path.exists(move_to):
+                os.mkdir(move_to)
+            if os.path.exists(os.path.join(move_to, self.filename)):
+                print("same file Already Exists... ", self.filename)
+                return
+            os.symlink(self.filepath, os.path.join(move_to, self.filename))
 
     @staticmethod
     def escape_filename(filename):
@@ -118,10 +131,10 @@ class Categories:
     def select_category(self, recorded_file):
         assert isinstance(recorded_file, RecordedFile)
         for category in self.data:
-            if category in recorded_file.search_name: #TODO 先頭一致に変えるべき?
+            if category in recorded_file.search_name:  # TODO 先頭一致に変えるべき?
                 recorded_file.category = category
                 return
-        result = difflib.get_close_matches(recorded_file.search_name, self.data,cutoff=0.8)
+        result = difflib.get_close_matches(recorded_file.search_name, self.data, cutoff=0.8)
         if not result:
             return
         recorded_file.category = result[0]
@@ -141,19 +154,18 @@ class Categories:
         for category in self.data:
             if len(category) <= 1:
                 self.data.remove(category)
-        #TODO 部分文字列になっているときに削除
+        # TODO 部分文字列になっているときに削除
         remove_indexs = []
         for category1 in self.data:
-            for i,category2 in enumerate(self.data):
+            for i, category2 in enumerate(self.data):
                 if len(category1) < len(category2):
                     if category1 == category2[:len(category1)]:
                         remove_indexs.append(i)
-        for i in sorted(remove_indexs,reverse=True):
+        for i in sorted(remove_indexs, reverse=True):
             self.data.pop(i)
 
 
-
-def main(file_dir, target_dir, execute=False):
+def main(file_dir, target_dir, execute=False, link=False):
     category = Categories(targetpath=target_dir, moemoe_tokyo_years=3)
     recs = []
 
@@ -178,9 +190,13 @@ def main(file_dir, target_dir, execute=False):
 
     _time = time.time()
     if execute or input("EXECUTE? (y,N) :") == "y":
-        for i,rec in enumerate(recs):
-            print("\r{}/{}    {} left. ".format(i,len(recs),time.time()-_time , ) ,end="")
-            rec.movefile(target_dir=target_dir, testmode=False)
+        for i, rec in enumerate(recs):
+            assert isinstance(rec, RecordedFile)
+            print("\r{}/{}    {} left. ".format(i, len(recs), int(time.time() - _time), ), end="")
+            if link:
+                rec.symlink(target_dir=target_dir, testmode=False)
+            if not link:
+                rec.movefile(target_dir=target_dir, testmode=False)
 
     print("END")
 
@@ -188,10 +204,17 @@ def main(file_dir, target_dir, execute=False):
 if __name__ == "__main__":
     import sys
     import argparse
+
     parser = argparse.ArgumentParser()
-    parser.add_argument('dir', nargs=2,help="file source  and directory that files move to ")
-    parser.add_argument("-y","--execute", help="execute without confirm",
+    parser.add_argument('dir', nargs=2, help="file source  and directory that files move to ")
+    parser.add_argument("-y", "--execute", help="execute without confirm",
                         action="store_true")
+    parser.add_argument("-d", "--dupedelete", help="dupedelte",
+                        action="store_false")
+
+    parser.add_argument("-l", "--link", help="symlink",
+                        action="store_false")
+
     args = parser.parse_args()
 
-    main(args.dir[0], args.dir[1],execute=args.execute)
+    main(args.dir[0], args.dir[1], execute=args.execute, link=args.link)
