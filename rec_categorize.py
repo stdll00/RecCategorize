@@ -112,7 +112,6 @@ class Categories:
             self.data.extend(file for file in os.listdir(targetpath) if file[0] != ".")
 
         if moemoe_tokyo_years:
-            print("fetch data")
             for i in range(moemoe_tokyo_years):
                 for title in self.get_moemoe_tokyo(datetime.datetime.today().year - i):
                     self.data.append(

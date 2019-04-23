@@ -9,12 +9,10 @@ for rec in recs:
     category.select_category(rec)
 
 category.add_category_from_files(recs)
-print(list(sorted(category.data)))
 
 for rec in recs:
     category.select_category(rec)
     assert isinstance(rec,RecordedFile)
-    if 0 or not rec.category:
-        print(rec) #IGNORED Files
+    print(rec.category," "*(50-len(str(rec.category))),rec.filename)
 
-print(list(sorted(list(set(rec.category for rec in recs if rec.category)))))
+

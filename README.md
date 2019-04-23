@@ -31,3 +31,10 @@ GoogleDriveを同期させて利用してください。　　
 ディスク容量等で同期が不可能な場合は
 GoogleDrive Ocamlfuseでマウントして使ってください(動作確認ずみ)
 https://github.com/astrada/google-drive-ocamlfuse
+
+# オプション
+```
+-y : 確認画面をスキップ
+-l : mvの代わりにシンボリックリンクを作成
+```
+
