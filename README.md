@@ -3,10 +3,9 @@
 
 ![emby]( https://github.com/stdll00/RecCategorize/blob/master/emby1.png?raw=true )
 
-自動振り分けしたディレクトリで[emby](https://emby.media/)の自動ダウンロード機能を使用した場合の画像。  
+自動振り分けしたディレクトリで[emby](https://emby.media/)のTV Show機能でmetadata自動ダウンロード機能を使用した場合の画像。  
 `-y -l`オプションをつけ定期実行しています。  
 タイトル部分はこのスクリプトが作成しており、アニメのデータベースと紐付いてNetflixのようなUIになります。
-
 
 # SetUp   
 ```angular2html
