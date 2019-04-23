@@ -40,3 +40,6 @@ https://github.com/astrada/google-drive-ocamlfuse
 -l : mvの代わりにシンボリックリンクを作成
 ```
 
+# サンプル
+サンプルデータの振り分け結果です。概ね正しく動いています。  
+https://github.com/stdll00/RecCategorize/blob/master/testout.txt
