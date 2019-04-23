@@ -28,15 +28,8 @@ categorized_dirに予めカテゴリの名前のディレクトリを作成し�
 target_dirに含まれるもの及び
 http://qiita.com/AKB428/items/64938febfd4dcf6ea698
 にあるapi.moemoe.tokyo/anime/v1/master/:year 
-のデータ、
-ファイル名から分類しています。
+のデータ、ファイル名から分類しています。
 
-
-# GoogleDrive (GooglePhotos) での利用  
-GoogleDriveを同期させて利用してください。　　
-ディスク容量等で同期が不可能な場合は
-GoogleDrive Ocamlfuseでマウントして使ってください(動作確認ずみ)
-https://github.com/astrada/google-drive-ocamlfuse
 
 # オプション
 ```
